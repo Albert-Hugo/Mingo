@@ -44,6 +44,7 @@ public final class DataInfo {
 
     /**
      * <code>string Key = 3;</code>
+     *
      * @return The key.
      */
     String getKey();
@@ -69,6 +70,13 @@ public final class DataInfo {
      * @return The type.
      */
     Msg.Type getType();
+
+    /**
+     * <code>int32 port = 5;</code>
+     *
+     * @return The port.
+     */
+    int getPort();
   }
 
   /**
@@ -146,6 +154,11 @@ public final class DataInfo {
               type_ = rawValue;
               break;
             }
+            case 40: {
+
+              port_ = input.readInt32();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                       input, unknownFields, extensionRegistry, tag)) {
@@ -159,7 +172,7 @@ public final class DataInfo {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
+                e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -216,7 +229,7 @@ public final class DataInfo {
       public final int getNumber() {
         if (this == UNRECOGNIZED) {
           throw new IllegalArgumentException(
-                  "Can't get the number of an unknown enum value.");
+              "Can't get the number of an unknown enum value.");
         }
         return value;
       }
@@ -237,8 +250,7 @@ public final class DataInfo {
        */
       public static Type forNumber(int value) {
         switch (value) {
-          case 0:
-            return AUTH;
+          case 0: return AUTH;
           case 1:
             return DATA;
           case 2:
@@ -276,7 +288,7 @@ public final class DataInfo {
       }
 
       public static final com.google.protobuf.Descriptors.EnumDescriptor
-      getDescriptor() {
+          getDescriptor() {
         return Msg.getDescriptor().getEnumTypes().get(0);
       }
 
@@ -305,7 +317,6 @@ public final class DataInfo {
 
     public static final int ID_FIELD_NUMBER = 1;
     private volatile Object iD_;
-
     /**
      * <code>string ID = 1;</code>
      * @return The iD.
@@ -392,15 +403,17 @@ public final class DataInfo {
       if (ref instanceof String) {
         return (String) ref;
       } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
+        com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
         String s = bs.toStringUtf8();
         key_ = s;
         return s;
       }
     }
+
     /**
      * <code>string Key = 3;</code>
+     *
      * @return The bytes for key.
      */
     @Override
@@ -443,6 +456,19 @@ public final class DataInfo {
       return result == null ? Type.UNRECOGNIZED : result;
     }
 
+    public static final int PORT_FIELD_NUMBER = 5;
+    private int port_;
+
+    /**
+     * <code>int32 port = 5;</code>
+     *
+     * @return The port.
+     */
+    @Override
+    public int getPort() {
+      return port_;
+    }
+
     private byte memoizedIsInitialized = -1;
 
     @Override
@@ -470,6 +496,9 @@ public final class DataInfo {
       if (type_ != Type.AUTH.getNumber()) {
         output.writeEnum(4, type_);
       }
+      if (port_ != 0) {
+        output.writeInt32(5, port_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -492,6 +521,10 @@ public final class DataInfo {
         size += com.google.protobuf.CodedOutputStream
                 .computeEnumSize(4, type_);
       }
+      if (port_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeInt32Size(5, port_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -500,7 +533,7 @@ public final class DataInfo {
     @Override
     public boolean equals(final Object obj) {
       if (obj == this) {
-       return true;
+        return true;
       }
       if (!(obj instanceof Msg)) {
         return super.equals(obj);
@@ -510,10 +543,12 @@ public final class DataInfo {
       if (!getID()
               .equals(other.getID())) return false;
       if (!getData()
-          .equals(other.getData())) return false;
+              .equals(other.getData())) return false;
       if (!getKey()
-          .equals(other.getKey())) return false;
+              .equals(other.getKey())) return false;
       if (type_ != other.type_) return false;
+      if (getPort()
+          != other.getPort()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -533,6 +568,8 @@ public final class DataInfo {
       hash = (53 * hash) + getKey().hashCode();
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -613,17 +650,14 @@ public final class DataInfo {
 
     public static Msg parseFrom(
             com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
               .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @Override
-    public Builder newBuilderForType() {
-      return newBuilder();
-    }
-
+    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
@@ -631,6 +665,7 @@ public final class DataInfo {
     public static Builder newBuilder(Msg prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
+
     @Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
@@ -680,6 +715,7 @@ public final class DataInfo {
                 .alwaysUseFieldBuilders) {
         }
       }
+
       @Override
       public Builder clear() {
         super.clear();
@@ -691,12 +727,14 @@ public final class DataInfo {
 
         type_ = 0;
 
+        port_ = 0;
+
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
-      getDescriptorForType() {
+          getDescriptorForType() {
         return DataInfo.internal_static_protobuf_Msg_descriptor;
       }
 
@@ -721,6 +759,7 @@ public final class DataInfo {
         result.data_ = data_;
         result.key_ = key_;
         result.type_ = type_;
+        result.port_ = port_;
         onBuilt();
         return result;
       }
@@ -740,15 +779,17 @@ public final class DataInfo {
           com.google.protobuf.Descriptors.FieldDescriptor field) {
         return super.clearField(field);
       }
+
       @Override
       public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+              com.google.protobuf.Descriptors.OneofDescriptor oneof) {
         return super.clearOneof(oneof);
       }
+
       @Override
       public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              int index, Object value) {
         return super.setRepeatedField(field, index, value);
       }
 
@@ -762,7 +803,7 @@ public final class DataInfo {
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof Msg) {
-          return mergeFrom((Msg) other);
+          return mergeFrom((Msg)other);
         } else {
           super.mergeFrom(other);
           return this;
@@ -786,6 +827,9 @@ public final class DataInfo {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
+        if (other.getPort() != 0) {
+          setPort(other.getPort());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -798,8 +842,8 @@ public final class DataInfo {
 
       @Override
       public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
               throws java.io.IOException {
         Msg parsedMessage = null;
         try {
@@ -1010,18 +1054,20 @@ public final class DataInfo {
           String value) {
         if (value == null) {
     throw new NullPointerException();
-  }
-  
+        }
+
         key_ = value;
         onChanged();
         return this;
       }
+
       /**
        * <code>string Key = 3;</code>
+       *
        * @return This builder for chaining.
        */
       public Builder clearKey() {
-        
+
         key_ = getDefaultInstance().getKey();
         onChanged();
         return this;
@@ -1056,23 +1102,19 @@ public final class DataInfo {
       public int getTypeValue() {
         return type_;
       }
-
       /**
        * <code>.protobuf.Msg.Type type = 4;</code>
-       *
        * @param value The enum numeric value on the wire for type to set.
        * @return This builder for chaining.
        */
       public Builder setTypeValue(int value) {
-
+        
         type_ = value;
         onChanged();
         return this;
       }
-
       /**
        * <code>.protobuf.Msg.Type type = 4;</code>
-       *
        * @return The type.
        */
       @Override
@@ -1081,10 +1123,8 @@ public final class DataInfo {
         Type result = Type.valueOf(type_);
         return result == null ? Type.UNRECOGNIZED : result;
       }
-
       /**
        * <code>.protobuf.Msg.Type type = 4;</code>
-       *
        * @param value The type to set.
        * @return This builder for chaining.
        */
@@ -1110,9 +1150,46 @@ public final class DataInfo {
         return this;
       }
 
+      private int port_;
+
+      /**
+       * <code>int32 port = 5;</code>
+       *
+       * @return The port.
+       */
+      @Override
+      public int getPort() {
+        return port_;
+      }
+
+      /**
+       * <code>int32 port = 5;</code>
+       *
+       * @param value The port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPort(int value) {
+
+        port_ = value;
+        onChanged();
+        return this;
+      }
+
+      /**
+       * <code>int32 port = 5;</code>
+       *
+       * @return This builder for chaining.
+       */
+      public Builder clearPort() {
+
+        port_ = 0;
+        onChanged();
+        return this;
+      }
+
       @Override
       public final Builder setUnknownFields(
-              final com.google.protobuf.UnknownFieldSet unknownFields) {
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
@@ -1142,7 +1219,7 @@ public final class DataInfo {
       public Msg parsePartialFrom(
               com.google.protobuf.CodedInputStream input,
               com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
+              throws com.google.protobuf.InvalidProtocolBufferException {
         return new Msg(input, extensionRegistry);
       }
     };
@@ -1176,13 +1253,15 @@ public final class DataInfo {
 
   private static com.google.protobuf.Descriptors.FileDescriptor
           descriptor;
+
   static {
     String[] descriptorData = {
-      "\n\ntest.proto\022\010protobuf\"z\n\003Msg\022\n\n\002ID\030\001 \001(" +
-      "\t\022\014\n\004Data\030\002 \001(\t\022\013\n\003Key\030\003 \001(\t\022 \n\004type\030\004 \001" +
-              "(\0162\022.protobuf.Msg.Type\"*\n\004Type\022\010\n\004AUTH\020\000" +
-              "\022\010\n\004DATA\020\001\022\016\n\nHEART_BEAT\020\002B&\n\032com.ido.mi" +
-              "ngo.common.protoB\010DataInfob\006proto3"
+            "\n\ntest.proto\022\010protobuf\"\210\001\n\003Msg\022\n\n\002ID\030\001 \001" +
+      "(\t\022\014\n\004Data\030\002 \001(\t\022\013\n\003Key\030\003 \001(\t\022 \n\004type\030\004 " +
+                    "\001(\0162\022.protobuf.Msg.Type\022\014\n\004port\030\005 \001(\005\"*\n" +
+                    "\004Type\022\010\n\004AUTH\020\000\022\010\n\004DATA\020\001\022\016\n\nHEART_BEAT\020" +
+                    "\002B&\n\032com.ido.mingo.common.protoB\010DataInf" +
+                    "ob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1193,7 +1272,7 @@ public final class DataInfo {
     internal_static_protobuf_Msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protobuf_Msg_descriptor,
-        new String[] { "ID", "Data", "Key", "Type", });
+        new String[] { "ID", "Data", "Key", "Type", "Port", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -10,7 +10,7 @@ public class ClientStarter {
     public static void main(String[] args) {
         //todo using cmd tools to handler cmd args
         try {
-            new ProxyClient().start(Config.getInstance().getIntValue("mingo.client.port"));
+            new ProxyClient().start(Config.getInstance().getIntValue("mingo.server.port"));
         } catch (InterruptedException e) {
             log.error(e.getMessage(),e);
         }

@@ -10,7 +10,7 @@ public class ClientProxyChannelHolder {
 
 
     public static void setMapping(int url, Channel ch) {
-        holder.put(url, ch);
+        holder.putIfAbsent(url, ch);
     }
 
     public static Channel getChannel(int url) {

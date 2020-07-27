@@ -71,45 +71,24 @@ public class Config {
      * @return 配置项
      */
     public String getStringValue(String key) {
-        return configuration.getProperty(key);
+        return System.getProperty(key, configuration.getProperty(key));
     }
 
-    public String getStringValue(String key, String defaultValue) {
-        String value = this.getStringValue(key);
-        if (value == null) {
-            return defaultValue;
-        } else {
-            return value;
-        }
-    }
-
-    public int getIntValue(String key, int defaultValue) {
-        return LangUtil.parseInt(configuration.getProperty(key), defaultValue);
-    }
 
     public int getIntValue(String key) {
-        return LangUtil.parseInt(configuration.getProperty(key));
+        return Integer.getInteger(key, LangUtil.parseInt(configuration.getProperty(key)));
     }
 
-    public double getDoubleValue(String key, Double defaultValue) {
-        return LangUtil.parseDouble(configuration.getProperty(key), defaultValue);
-    }
 
     public double getDoubleValue(String key) {
         return LangUtil.parseDouble(configuration.getProperty(key));
     }
 
-    public double getLongValue(String key, Long defaultValue) {
-        return LangUtil.parseLong(configuration.getProperty(key), defaultValue);
-    }
 
     public double getLongValue(String key) {
         return LangUtil.parseLong(configuration.getProperty(key));
     }
 
-    public Boolean getBooleanValue(String key, Boolean defaultValue) {
-        return LangUtil.parseBoolean(configuration.getProperty(key), defaultValue);
-    }
 
     public Boolean getBooleanValue(String key) {
         return LangUtil.parseBoolean(configuration.getProperty(key));

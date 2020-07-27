@@ -2,7 +2,6 @@ package com.ido.mingo.server.connect.handler;
 
 import com.ido.mingo.common.proto.DataInfo;
 import com.ido.mingo.server.context.ClientProxyChannelHolder;
-import com.ido.mingo.server.context.MingoClientConfig;
 import com.ido.mingo.server.context.ResultHolder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -54,11 +53,19 @@ public class ClientHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
 
     private void handlerAuth(ChannelHandlerContext ctx, DataInfo.Msg msg) {
         //todo 连接信息, 根据KEY 获取对应连接client 的 端口请求配置
-        log.info("client {}  connect", msg.getKey());
         String key = msg.getKey();
-        int port = MingoClientConfig.getClientPort(key);
+        if (clientNotExist(key)) {
+            ctx.close();
+        }
+
+        log.info("client {}  connect", msg.getKey());
+        int port = msg.getPort();
         ClientProxyChannelHolder.setMapping(port, ctx.channel());
 
+    }
 
+    private boolean clientNotExist(String key) {
+        //todo 校验用户的key 是否存在
+        return false;
     }
 }

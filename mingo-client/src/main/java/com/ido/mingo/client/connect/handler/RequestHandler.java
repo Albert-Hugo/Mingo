@@ -23,13 +23,27 @@ import java.util.concurrent.TimeUnit;
 public class RequestHandler extends ChannelInboundHandlerAdapter {
     private static final ExecutorService taskWorker = new ThreadPoolExecutor(1000, 1000, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100), new ThreadPoolExecutor.AbortPolicy());
 
+    /**
+     * @Author Ido
+     * @Description //连接Mingo server
+     * @Date 22:08 2020/7/27
+     **/
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        DataInfo.Msg dataInfo = DataInfo.Msg.newBuilder().setKey(Config.getInstance().getStringValue("mingo.key")).setType(DataInfo.Msg.Type.AUTH).build();
+        //发送 authentication 信息
+        DataInfo.Msg dataInfo = DataInfo.Msg.newBuilder()
+                .setKey(Config.getInstance().getStringValue("mingo.key"))
+                .setPort(Config.getInstance().getIntValue("mingo.remote.mapping.port"))
+                .setType(DataInfo.Msg.Type.AUTH).build();
         ctx.writeAndFlush(dataInfo);
     }
 
 
+    /**
+     * @Author Ido
+     * @Description //回写数据到目标客户端
+     * @Date 22:12 2020/7/27
+     **/
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         DataInfo.Msg data = (DataInfo.Msg) msg;
@@ -42,7 +56,7 @@ public class RequestHandler extends ChannelInboundHandlerAdapter {
 
                     Socket socket = null;
 
-                    socket = new Socket(Config.getInstance().getStringValue("target.host"), Config.getInstance().getIntValue("target.port"));
+                    socket = new Socket(Config.getInstance().getStringValue("mingo.target.host"), Config.getInstance().getIntValue("mingo.target.port"));
                     //获取输出流，向服务器端发送信息
                     OutputStream outputStream = socket.getOutputStream();//字节输出流
                     PrintWriter pw = new PrintWriter(outputStream); //将输出流包装为打印流

@@ -6,15 +6,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientProxyChannelHolder {
-    private final static Map<String, Channel> holder = new ConcurrentHashMap<>();
+    private final static Map<Integer, Channel> holder = new ConcurrentHashMap<>();
 
 
-
-    public static void setMapping(String url, Channel ch) {
+    public static void setMapping(int url, Channel ch) {
         holder.put(url, ch);
     }
 
-    public static Channel getChannel(String url) {
+    public static Channel getChannel(int url) {
         return holder.get(url);
     }
 

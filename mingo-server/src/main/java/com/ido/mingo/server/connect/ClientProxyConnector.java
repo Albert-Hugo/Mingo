@@ -1,23 +1,21 @@
 package com.ido.mingo.server.connect;
 
-import com.ido.mingo.server.connect.handler.ClientHandler;
-import com.ido.mingo.server.context.ClientProxyChannelHolder;
 import com.ido.mingo.common.proto.DataInfo;
-import io.netty.bootstrap.Bootstrap;
+import com.ido.mingo.server.connect.handler.ClientHandler;
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.TimeUnit;
-
 /**
- * client 用于连接远程proxy客户端
+ * client 用于连接 mingo client
+ *
  * @author Carl
  * @date 2019/12/23
  */
@@ -25,14 +23,16 @@ import java.util.concurrent.TimeUnit;
 public class ClientProxyConnector {
 
 
-    public void connect(int host) throws InterruptedException {
-        Bootstrap bootstrap = new Bootstrap();
+    public void start(int port) throws InterruptedException {
+        ServerBootstrap bootstrap = new ServerBootstrap();
         EventLoopGroup master = new NioEventLoopGroup();
+        EventLoopGroup worker = new NioEventLoopGroup();
         try {
 
-            bootstrap.group(master)
-                    .channel(NioSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>() {
+            bootstrap.group(master, worker)
+                    .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 100)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
@@ -42,10 +42,9 @@ public class ClientProxyConnector {
                                     .addLast(new ProtobufEncoder())
                                     .addLast(new ProtobufDecoder(DataInfo.Msg.getDefaultInstance()))
                                     .addLast(new ClientHandler());
-                            ClientProxyChannelHolder.setMapping("/home", pipeline.channel());
                         }
                     });
-            ChannelFuture f = bootstrap.connect("127.0.0.1", host);
+            ChannelFuture f = bootstrap.bind("localhost", port);
 
             f
                     .addListener(new ChannelFutureListener() {
@@ -65,18 +64,8 @@ public class ClientProxyConnector {
         } finally {
             log.info("client shutdown");
             master.shutdownGracefully();
+            worker.shutdownGracefully();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                        new ClientProxyConnector().connect(host);
-                    } catch (InterruptedException e) {
-                        log.info(e.getMessage(),e);
-                    }
-                }
-            }).start();
 
         }
     }

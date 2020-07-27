@@ -47,29 +47,49 @@ public final class DataInfo {
      * @return The key.
      */
     String getKey();
+
     /**
      * <code>string Key = 3;</code>
+     *
      * @return The bytes for key.
      */
     com.google.protobuf.ByteString
-        getKeyBytes();
+    getKeyBytes();
+
+    /**
+     * <code>.protobuf.Msg.Type type = 4;</code>
+     *
+     * @return The enum numeric value on the wire for type.
+     */
+    int getTypeValue();
+
+    /**
+     * <code>.protobuf.Msg.Type type = 4;</code>
+     *
+     * @return The type.
+     */
+    Msg.Type getType();
   }
+
   /**
    * Protobuf type {@code protobuf.Msg}
    */
   public static final class Msg extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:protobuf.Msg)
-      MsgOrBuilder {
-  private static final long serialVersionUID = 0L;
+          com.google.protobuf.GeneratedMessageV3 implements
+          // @@protoc_insertion_point(message_implements:protobuf.Msg)
+          MsgOrBuilder {
+    private static final long serialVersionUID = 0L;
+
     // Use Msg.newBuilder() to construct.
     private Msg(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
+
     private Msg() {
       iD_ = "";
       data_ = "";
       key_ = "";
+      type_ = 0;
     }
 
     @Override
@@ -120,9 +140,15 @@ public final class DataInfo {
               key_ = s;
               break;
             }
+            case 32: {
+              int rawValue = input.readEnum();
+
+              type_ = rawValue;
+              break;
+            }
             default: {
               if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
+                      input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -139,21 +165,147 @@ public final class DataInfo {
         makeExtensionsImmutable();
       }
     }
+
     public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return internal_static_protobuf_Msg_descriptor;
+    getDescriptor() {
+      return DataInfo.internal_static_protobuf_Msg_descriptor;
     }
 
     @Override
     protected FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return internal_static_protobuf_Msg_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.ido.mingo.common.proto.DataInfo.Msg.class, com.ido.mingo.common.proto.DataInfo.Msg.Builder.class);
+    internalGetFieldAccessorTable() {
+      return DataInfo.internal_static_protobuf_Msg_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                      Msg.class, Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code protobuf.Msg.Type}
+     */
+    public enum Type
+            implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>AUTH = 0;</code>
+       */
+      AUTH(0),
+      /**
+       * <code>DATA = 1;</code>
+       */
+      DATA(1),
+      /**
+       * <code>HEART_BEAT = 2;</code>
+       */
+      HEART_BEAT(2),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>AUTH = 0;</code>
+       */
+      public static final int AUTH_VALUE = 0;
+      /**
+       * <code>DATA = 1;</code>
+       */
+      public static final int DATA_VALUE = 1;
+      /**
+       * <code>HEART_BEAT = 2;</code>
+       */
+      public static final int HEART_BEAT_VALUE = 2;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new IllegalArgumentException(
+                  "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0:
+            return AUTH;
+          case 1:
+            return DATA;
+          case 2:
+            return HEART_BEAT;
+          default:
+            return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+      internalGetValueMap() {
+        return internalValueMap;
+      }
+
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+              Type> internalValueMap =
+              new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+                public Type findValueByNumber(int number) {
+                  return Type.forNumber(number);
+                }
+              };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+      getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new IllegalStateException(
+                  "Can't get the descriptor of an unrecognized enum value.");
+        }
+        return getDescriptor().getValues().get(ordinal());
+      }
+
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+      getDescriptorForType() {
+        return getDescriptor();
+      }
+
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+      getDescriptor() {
+        return Msg.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+              com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new IllegalArgumentException(
+                  "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protobuf.Msg.Type)
     }
 
     public static final int ID_FIELD_NUMBER = 1;
     private volatile Object iD_;
+
     /**
      * <code>string ID = 1;</code>
      * @return The iD.
@@ -253,12 +405,12 @@ public final class DataInfo {
      */
     @Override
     public com.google.protobuf.ByteString
-        getKeyBytes() {
+    getKeyBytes() {
       Object ref = key_;
       if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (String) ref);
+        com.google.protobuf.ByteString b =
+                com.google.protobuf.ByteString.copyFromUtf8(
+                        (String) ref);
         key_ = b;
         return b;
       } else {
@@ -266,7 +418,33 @@ public final class DataInfo {
       }
     }
 
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private int type_;
+
+    /**
+     * <code>.protobuf.Msg.Type type = 4;</code>
+     *
+     * @return The enum numeric value on the wire for type.
+     */
+    @Override
+    public int getTypeValue() {
+      return type_;
+    }
+
+    /**
+     * <code>.protobuf.Msg.Type type = 4;</code>
+     *
+     * @return The type.
+     */
+    @Override
+    public Type getType() {
+      @SuppressWarnings("deprecation")
+      Type result = Type.valueOf(type_);
+      return result == null ? Type.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
+
     @Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -279,7 +457,7 @@ public final class DataInfo {
 
     @Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
+            throws java.io.IOException {
       if (!getIDBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, iD_);
       }
@@ -288,6 +466,9 @@ public final class DataInfo {
       }
       if (!getKeyBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, key_);
+      }
+      if (type_ != Type.AUTH.getNumber()) {
+        output.writeEnum(4, type_);
       }
       unknownFields.writeTo(output);
     }
@@ -307,6 +488,10 @@ public final class DataInfo {
       if (!getKeyBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, key_);
       }
+      if (type_ != Type.AUTH.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+                .computeEnumSize(4, type_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -317,17 +502,18 @@ public final class DataInfo {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof com.ido.mingo.common.proto.DataInfo.Msg)) {
+      if (!(obj instanceof Msg)) {
         return super.equals(obj);
       }
-      com.ido.mingo.common.proto.DataInfo.Msg other = (com.ido.mingo.common.proto.DataInfo.Msg) obj;
+      Msg other = (Msg) obj;
 
       if (!getID()
-          .equals(other.getID())) return false;
+              .equals(other.getID())) return false;
       if (!getData()
           .equals(other.getData())) return false;
       if (!getKey()
           .equals(other.getKey())) return false;
+      if (type_ != other.type_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -345,119 +531,137 @@ public final class DataInfo {
       hash = (53 * hash) + getData().hashCode();
       hash = (37 * hash) + KEY_FIELD_NUMBER;
       hash = (53 * hash) + getKey().hashCode();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + type_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+    public static Msg parseFrom(
+            java.nio.ByteBuffer data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+
+    public static Msg parseFrom(
+            java.nio.ByteBuffer data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+
+    public static Msg parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+
+    public static Msg parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+
+    public static Msg parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
+
+    public static Msg parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
+
+    public static Msg parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
+              .parseWithIOException(PARSER, input);
     }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        java.io.InputStream input,
+
+    public static Msg parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Msg parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input);
+    }
+
+    public static Msg parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public static Msg parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+              .parseWithIOException(PARSER, input);
+    }
+
+    public static Msg parseFrom(
+            com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
+            throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.ido.mingo.common.proto.DataInfo.Msg parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
+              .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
     @Override
-    public Builder newBuilderForType() { return newBuilder(); }
+    public Builder newBuilderForType() {
+      return newBuilder();
+    }
+
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(com.ido.mingo.common.proto.DataInfo.Msg prototype) {
+
+    public static Builder newBuilder(Msg prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
+              ? new Builder() : new Builder().mergeFrom(this);
     }
 
     @Override
     protected Builder newBuilderForType(
-        BuilderParent parent) {
+            BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
+
     /**
      * Protobuf type {@code protobuf.Msg}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:protobuf.Msg)
-        com.ido.mingo.common.proto.DataInfo.MsgOrBuilder {
+            com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+            // @@protoc_insertion_point(builder_implements:protobuf.Msg)
+            MsgOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return internal_static_protobuf_Msg_descriptor;
+      getDescriptor() {
+        return DataInfo.internal_static_protobuf_Msg_descriptor;
       }
 
       @Override
       protected FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return internal_static_protobuf_Msg_fieldAccessorTable
+        return DataInfo.internal_static_protobuf_Msg_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.ido.mingo.common.proto.DataInfo.Msg.class, com.ido.mingo.common.proto.DataInfo.Msg.Builder.class);
+                Msg.class, Builder.class);
       }
 
       // Construct using com.ido.mingo.common.proto.DataInfo.Msg.newBuilder()
@@ -470,6 +674,7 @@ public final class DataInfo {
         super(parent);
         maybeForceBuilderInitialization();
       }
+
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
@@ -484,23 +689,25 @@ public final class DataInfo {
 
         key_ = "";
 
+        type_ = 0;
+
         return this;
       }
 
       @Override
       public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return internal_static_protobuf_Msg_descriptor;
+      getDescriptorForType() {
+        return DataInfo.internal_static_protobuf_Msg_descriptor;
       }
 
       @Override
-      public com.ido.mingo.common.proto.DataInfo.Msg getDefaultInstanceForType() {
-        return getDefaultInstance();
+      public Msg getDefaultInstanceForType() {
+        return Msg.getDefaultInstance();
       }
 
       @Override
-      public com.ido.mingo.common.proto.DataInfo.Msg build() {
-        com.ido.mingo.common.proto.DataInfo.Msg result = buildPartial();
+      public Msg build() {
+        Msg result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -508,11 +715,12 @@ public final class DataInfo {
       }
 
       @Override
-      public com.ido.mingo.common.proto.DataInfo.Msg buildPartial() {
-        com.ido.mingo.common.proto.DataInfo.Msg result = new com.ido.mingo.common.proto.DataInfo.Msg(this);
+      public Msg buildPartial() {
+        Msg result = new Msg(this);
         result.iD_ = iD_;
         result.data_ = data_;
         result.key_ = key_;
+        result.type_ = type_;
         onBuilt();
         return result;
       }
@@ -543,24 +751,26 @@ public final class DataInfo {
           int index, Object value) {
         return super.setRepeatedField(field, index, value);
       }
+
       @Override
       public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+              com.google.protobuf.Descriptors.FieldDescriptor field,
+              Object value) {
         return super.addRepeatedField(field, value);
       }
+
       @Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.ido.mingo.common.proto.DataInfo.Msg) {
-          return mergeFrom((com.ido.mingo.common.proto.DataInfo.Msg)other);
+        if (other instanceof Msg) {
+          return mergeFrom((Msg) other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.ido.mingo.common.proto.DataInfo.Msg other) {
-        if (other == getDefaultInstance()) return this;
+      public Builder mergeFrom(Msg other) {
+        if (other == Msg.getDefaultInstance()) return this;
         if (!other.getID().isEmpty()) {
           iD_ = other.iD_;
           onChanged();
@@ -572,6 +782,9 @@ public final class DataInfo {
         if (!other.getKey().isEmpty()) {
           key_ = other.key_;
           onChanged();
+        }
+        if (other.type_ != 0) {
+          setTypeValue(other.getTypeValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -587,12 +800,12 @@ public final class DataInfo {
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.ido.mingo.common.proto.DataInfo.Msg parsedMessage = null;
+              throws java.io.IOException {
+        Msg parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.ido.mingo.common.proto.DataInfo.Msg) e.getUnfinishedMessage();
+          parsedMessage = (Msg) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -813,25 +1026,93 @@ public final class DataInfo {
         onChanged();
         return this;
       }
+
       /**
        * <code>string Key = 3;</code>
+       *
        * @param value The bytes for key to set.
        * @return This builder for chaining.
        */
       public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
+              com.google.protobuf.ByteString value) {
         if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+          throw new NullPointerException();
+        }
+        checkByteStringIsUtf8(value);
+
         key_ = value;
         onChanged();
         return this;
       }
+
+      private int type_ = 0;
+
+      /**
+       * <code>.protobuf.Msg.Type type = 4;</code>
+       *
+       * @return The enum numeric value on the wire for type.
+       */
+      @Override
+      public int getTypeValue() {
+        return type_;
+      }
+
+      /**
+       * <code>.protobuf.Msg.Type type = 4;</code>
+       *
+       * @param value The enum numeric value on the wire for type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeValue(int value) {
+
+        type_ = value;
+        onChanged();
+        return this;
+      }
+
+      /**
+       * <code>.protobuf.Msg.Type type = 4;</code>
+       *
+       * @return The type.
+       */
+      @Override
+      public Type getType() {
+        @SuppressWarnings("deprecation")
+        Type result = Type.valueOf(type_);
+        return result == null ? Type.UNRECOGNIZED : result;
+      }
+
+      /**
+       * <code>.protobuf.Msg.Type type = 4;</code>
+       *
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+
+      /**
+       * <code>.protobuf.Msg.Type type = 4;</code>
+       *
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
       @Override
       public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
+              final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFields(unknownFields);
       }
 
@@ -846,12 +1127,12 @@ public final class DataInfo {
     }
 
     // @@protoc_insertion_point(class_scope:protobuf.Msg)
-    private static final com.ido.mingo.common.proto.DataInfo.Msg DEFAULT_INSTANCE;
+    private static final Msg DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new com.ido.mingo.common.proto.DataInfo.Msg();
+      DEFAULT_INSTANCE = new Msg();
     }
 
-    public static com.ido.mingo.common.proto.DataInfo.Msg getDefaultInstance() {
+    public static Msg getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -859,8 +1140,8 @@ public final class DataInfo {
         PARSER = new com.google.protobuf.AbstractParser<Msg>() {
       @Override
       public Msg parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return new Msg(input, extensionRegistry);
       }
@@ -876,29 +1157,32 @@ public final class DataInfo {
     }
 
     @Override
-    public com.ido.mingo.common.proto.DataInfo.Msg getDefaultInstanceForType() {
+    public Msg getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_protobuf_Msg_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_protobuf_Msg_fieldAccessorTable;
+          internal_static_protobuf_Msg_descriptor;
+  private static final
+  com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internal_static_protobuf_Msg_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
+  getDescriptor() {
     return descriptor;
   }
-  private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
+
+  private static com.google.protobuf.Descriptors.FileDescriptor
+          descriptor;
   static {
     String[] descriptorData = {
-      "\n\ntest.proto\022\010protobuf\",\n\003Msg\022\n\n\002ID\030\001 \001(" +
-      "\t\022\014\n\004Data\030\002 \001(\t\022\013\n\003Key\030\003 \001(\tB&\n\032com.ido." +
-      "mingo.common.protoB\010DataInfob\006proto3"
+      "\n\ntest.proto\022\010protobuf\"z\n\003Msg\022\n\n\002ID\030\001 \001(" +
+      "\t\022\014\n\004Data\030\002 \001(\t\022\013\n\003Key\030\003 \001(\t\022 \n\004type\030\004 \001" +
+              "(\0162\022.protobuf.Msg.Type\"*\n\004Type\022\010\n\004AUTH\020\000" +
+              "\022\010\n\004DATA\020\001\022\016\n\nHEART_BEAT\020\002B&\n\032com.ido.mi" +
+              "ngo.common.protoB\010DataInfob\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -909,7 +1193,7 @@ public final class DataInfo {
     internal_static_protobuf_Msg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_protobuf_Msg_descriptor,
-        new String[] { "ID", "Data", "Key", });
+        new String[] { "ID", "Data", "Key", "Type", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

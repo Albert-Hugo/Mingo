@@ -9,6 +9,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @Author Ido
+ * @Description deploy to public net work
+ * @Date 15:39 2020/7/27
+ **/
 public class ServerStarter {
     private final static CountDownLatch countDownLatch  = new CountDownLatch(2);
 
@@ -26,7 +31,7 @@ public class ServerStarter {
         });
         executorService.execute(()->{
             try {
-                new ClientProxyConnector().connect(Config.getInstance().getIntValue("mingo.client.port"));
+                new ClientProxyConnector().start(Config.getInstance().getIntValue("mingo.client.port"));
                 countDownLatch.countDown();;
             } catch (InterruptedException e) {
                 e.printStackTrace();

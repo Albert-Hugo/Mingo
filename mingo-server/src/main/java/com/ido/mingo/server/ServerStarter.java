@@ -1,6 +1,7 @@
 package com.ido.mingo.server;
 
 
+import com.ido.mingo.common.Config;
 import com.ido.mingo.server.connect.ClientProxyConnector;
 import com.ido.mingo.server.connect.ProxyServer;
 
@@ -17,7 +18,7 @@ public class ServerStarter {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.execute(()->{
             try {
-                new ProxyServer().start(20001);//start http server and listening
+                new ProxyServer().start(Config.getInstance().getIntValue("mingo.server.port"));//start http server and listening
                 countDownLatch.countDown();;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -25,7 +26,7 @@ public class ServerStarter {
         });
         executorService.execute(()->{
             try {
-                new ClientProxyConnector().connect(20002);
+                new ClientProxyConnector().connect(Config.getInstance().getIntValue("mingo.client.port"));
                 countDownLatch.countDown();;
             } catch (InterruptedException e) {
                 e.printStackTrace();

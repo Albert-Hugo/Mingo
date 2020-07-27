@@ -2,10 +2,10 @@ package com.ido.mingo.server;
 
 
 import com.ido.mingo.common.Config;
-import com.ido.mingo.server.connect.ClientProxyConnector;
-import com.ido.mingo.server.connect.ProxyServer;
+import com.ido.mingo.server.connect.LocalStubServer;
+import com.ido.mingo.server.connect.MingoServer;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,32 +14,42 @@ import java.util.concurrent.Executors;
  * @Description deploy to public net work
  * @Date 15:39 2020/7/27
  **/
+@Slf4j
 public class ServerStarter {
-    private final static CountDownLatch countDownLatch  = new CountDownLatch(2);
 
     public static void main(String[] args) throws InterruptedException {
 
 
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        executorService.execute(()->{
+        String ports = Config.getInstance().getStringValue("mingo.local.ports");
+        String[] ps = ports.split(",");
+        ExecutorService executorService = Executors.newFixedThreadPool(ps.length + 1);
+
+        for (String p : ps) {
+
+            executorService.execute(() -> {
+                try {
+                    //start local server and listening to incoming request
+                    new LocalStubServer().start(Integer.parseInt(p));
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage(), e);
+                    System.exit(-1);
+                }
+            });
+        }
+        executorService.execute(() -> {
             try {
-                new ProxyServer().start(Config.getInstance().getIntValue("mingo.server.port"));//start http server and listening
-                countDownLatch.countDown();;
+                new MingoServer().start(Config.getInstance().getIntValue("mingo.port"));
             } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.execute(()->{
-            try {
-                new ClientProxyConnector().start(Config.getInstance().getIntValue("mingo.client.port"));
-                countDownLatch.countDown();;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
+                System.exit(-1);
             }
         });
 
-        countDownLatch.await();
         executorService.shutdown();
 
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutdown Hook is running !");
+        }));
     }
 }

@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 16:44 2020/7/27
  **/
 @Slf4j
-public class ProxyServer {
+public class LocalStubServer {
 
     public void start(int port) throws InterruptedException {
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -43,7 +43,7 @@ public class ProxyServer {
                                 future.cause().printStackTrace();
                             }
 
-                            log.info("proxy server started and listen at "+ port);
+                            log.info("stub server started and listen at " + port);
 
 
                         }
@@ -57,7 +57,6 @@ public class ProxyServer {
             master.shutdownGracefully();
             worker.shutdownGracefully();
 
-            new ProxyServer().start(port);
         }
     }
 }

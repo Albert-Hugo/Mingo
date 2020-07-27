@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019/12/23
  */
 @Slf4j
-public class ClientProxyConnector {
+public class MingoServer {
 
 
     public void start(int port) throws InterruptedException {

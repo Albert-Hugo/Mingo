@@ -12,6 +12,10 @@ public class ResultHolder {
         return holder.get(sessionId);
     }
 
+    public static void remove(String sessionId) {
+        holder.remove(sessionId);
+    }
+
 
     public static void put(String sessionId, Channel result) {
         holder.put(sessionId, result);

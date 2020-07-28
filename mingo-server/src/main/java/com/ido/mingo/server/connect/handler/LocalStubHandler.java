@@ -15,7 +15,7 @@ import java.net.InetSocketAddress;
 import java.util.UUID;
 
 @Slf4j
-public class ServerHandler extends ChannelInboundHandlerAdapter {
+public class LocalStubHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {

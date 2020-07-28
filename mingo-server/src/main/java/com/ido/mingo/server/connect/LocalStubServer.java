@@ -1,6 +1,6 @@
 package com.ido.mingo.server.connect;
 
-import com.ido.mingo.server.connect.handler.ServerHandler;
+import com.ido.mingo.server.connect.handler.LocalStubHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author Ido
- * @Description //TODO 最好支持在线动态切换端口
+ * @Description //监听代理的端口服务
  * @Date 16:44 2020/7/27
  **/
 @Slf4j
@@ -29,7 +29,7 @@ public class LocalStubServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline
-                                    .addLast(new ServerHandler());
+                                    .addLast(new LocalStubHandler());
 
                         }
                     });

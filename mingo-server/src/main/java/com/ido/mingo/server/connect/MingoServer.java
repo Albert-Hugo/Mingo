@@ -1,7 +1,7 @@
 package com.ido.mingo.server.connect;
 
 import com.ido.mingo.common.proto.DataInfo;
-import com.ido.mingo.server.connect.handler.ClientHandler;
+import com.ido.mingo.server.connect.handler.MingoHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -14,7 +14,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * client 用于连接 mingo client
+ * mingo server  用于被 mingo client 连接
  *
  * @author Carl
  * @date 2019/12/23
@@ -41,7 +41,7 @@ public class MingoServer {
                                     .addLast(new ProtobufVarint32LengthFieldPrepender())
                                     .addLast(new ProtobufEncoder())
                                     .addLast(new ProtobufDecoder(DataInfo.Msg.getDefaultInstance()))
-                                    .addLast(new ClientHandler());
+                                    .addLast(new MingoHandler());
                         }
                     });
             ChannelFuture f = bootstrap.bind(port);

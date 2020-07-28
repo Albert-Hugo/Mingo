@@ -11,18 +11,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Slf4j
-public class ClientHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
-    private static AtomicInteger count = new AtomicInteger(0);
+public class MingoHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
 
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
-
-    }
 
     /**
      * @Author Ido
@@ -32,27 +23,37 @@ public class ClientHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DataInfo.Msg msg) throws Exception {
 
-        log.debug("client connect");
+
         if (msg.getType().equals(DataInfo.Msg.Type.AUTH)) {
             handlerAuth(ctx, msg);
         } else if (msg.getType().equals(DataInfo.Msg.Type.DATA)) {
-            // 将这里的结果返回到 proxy server里面
-            ctx.channel().eventLoop().execute(() -> {
-
-                ByteBuf r = Unpooled.copiedBuffer(msg.getData().getBytes());
-                Channel channel = ResultHolder.get(msg.getID());
-                channel.writeAndFlush(r);
-
-                ReferenceCountUtil.release(msg);
-                channel.close();
-            });
+            handlerData(ctx, msg);
+        } else if (msg.getType().equals(DataInfo.Msg.Type.HEART_BEAT)) {
+            log.info("heart beat from {}", msg.getKey());
+            // 指定时间内，没有heart beat 则下线，解除绑定的channel
+            int port = msg.getPort();
+            ClientProxyChannelHolder.refresh(port);
         }
 
 
     }
 
+    private void handlerData(ChannelHandlerContext ctx, DataInfo.Msg msg) {
+        // 将这里的结果返回到 proxy server里面
+        ctx.channel().eventLoop().execute(() -> {
+
+            ByteBuf r = Unpooled.copiedBuffer(msg.getData().getBytes());
+            Channel channel = ResultHolder.get(msg.getID());
+            channel.writeAndFlush(r);
+
+            ReferenceCountUtil.release(msg);
+            channel.close();
+            ResultHolder.remove(msg.getID());
+        });
+    }
+
     private void handlerAuth(ChannelHandlerContext ctx, DataInfo.Msg msg) {
-        //todo 连接信息, 根据KEY 获取对应连接client 的 端口请求配置
+        //连接信息, 根据KEY 获取对应连接client 的 端口请求配置
         String key = msg.getKey();
         if (clientNotExist(key)) {
             ctx.close();

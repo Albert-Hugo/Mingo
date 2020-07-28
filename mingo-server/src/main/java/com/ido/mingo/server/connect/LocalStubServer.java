@@ -33,7 +33,7 @@ public class LocalStubServer {
 
                         }
                     });
-            ChannelFuture f = bootstrap.bind("127.0.0.1", port);
+            ChannelFuture f = bootstrap.bind(port);
 
             f
                     .addListener(new ChannelFutureListener() {

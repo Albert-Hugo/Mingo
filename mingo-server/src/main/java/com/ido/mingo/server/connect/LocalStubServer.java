@@ -41,6 +41,7 @@ public class LocalStubServer {
                         public void operationComplete(ChannelFuture future) throws Exception {
                             if (!future.isSuccess()) {
                                 future.cause().printStackTrace();
+                                return;
                             }
 
                             log.info("stub server started and listen at " + port);

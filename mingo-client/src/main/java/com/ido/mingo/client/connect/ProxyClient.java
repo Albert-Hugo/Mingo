@@ -1,6 +1,7 @@
 package com.ido.mingo.client.connect;
 
 import com.ido.mingo.client.connect.handler.RequestHandler;
+import com.ido.mingo.common.Config;
 import com.ido.mingo.common.proto.DataInfo;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -20,8 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ProxyClient {
 
 
-    public  void start(int port) throws InterruptedException {
-
+    public void start() throws InterruptedException {
+        int port = Config.getInstance().getIntValue("mingo.server.port");
+        String host = Config.getInstance().getStringValue("mingo.server.host");
         Bootstrap bootstrap = new Bootstrap();
         EventLoopGroup master = new NioEventLoopGroup();
         try {
@@ -42,7 +44,7 @@ public class ProxyClient {
                             ;
                         }
                     });
-            ChannelFuture f = bootstrap.connect("127.0.0.1", port);
+            ChannelFuture f = bootstrap.connect(host, port);
 
             f
                     .addListener(new ChannelFutureListener() {
@@ -52,7 +54,7 @@ public class ProxyClient {
                                 future.cause().printStackTrace();
                             }
 
-                            log.info("proxy client started and listen at" + port);
+                            log.info("connect to mingo server {}:{}", host, port);
 
 
                         }
@@ -64,7 +66,6 @@ public class ProxyClient {
 
         } finally {
             master.shutdownGracefully();
-//            worker.shutdownGracefully();
         }
 
 

@@ -58,7 +58,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
             ctx.close();
         }
 
-        log.info("client {}  connect", msg.getKey());
+        log.info("client {}  connect, mapping port {}", msg.getKey(), msg.getPort());
         int port = msg.getPort();
         ClientProxyChannelHolder.setMapping(port, ctx.channel());
 

@@ -10,10 +10,21 @@
         </encoder>
     </appender>
 
+    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>log/app.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>log/history/app-log.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>===[%X{THREAD_ID}]%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger Line:%-3L - %msg%n</pattern>
+        </encoder>
+    </appender>
 
 
     <logger name="com.ido" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="rollingFileAppender"/>
     </logger>
 
     <logger name="io.netty" level="WARN" additivity="false">

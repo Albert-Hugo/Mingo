@@ -44,7 +44,7 @@ public class MingoServer {
                                     .addLast(new ClientHandler());
                         }
                     });
-            ChannelFuture f = bootstrap.bind("localhost", port);
+            ChannelFuture f = bootstrap.bind(port);
 
             f
                     .addListener(new ChannelFutureListener() {
@@ -52,7 +52,11 @@ public class MingoServer {
                         public void operationComplete(ChannelFuture future) throws Exception {
                             if (!future.isSuccess()) {
                                 future.cause().printStackTrace();
+                                log.error(future.cause().getMessage(), future.cause());
+                                return;
                             }
+
+                            log.info("mingo server started at " + port);
 
 
                         }

@@ -51,7 +51,9 @@ public class ProxyClient {
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception {
                             if (!future.isSuccess()) {
+                                log.error(future.cause().getMessage(), future.cause());
                                 future.cause().printStackTrace();
+                                return;
                             }
 
                             log.info("connect to mingo server {}:{}", host, port);

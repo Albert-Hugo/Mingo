@@ -1,5 +1,6 @@
 package com.ido.mingo.server.connect.handler;
 
+import com.ido.mingo.common.Config;
 import com.ido.mingo.common.proto.DataInfo;
 import com.ido.mingo.server.context.ClientProxyChannelHolder;
 import com.ido.mingo.server.context.ResultHolder;
@@ -9,6 +10,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -66,7 +68,15 @@ public class MingoHandler extends SimpleChannelInboundHandler<DataInfo.Msg> {
     }
 
     private boolean clientNotExist(String key) {
-        //todo 校验用户的key 是否存在
-        return false;
+        if (StringUtil.isNullOrEmpty(key)) {
+            return true;
+        }
+        String keys = Config.getInstance().getStringValue("mingo.client.keys");
+        for (String s : keys.split(",")) {
+            if (s.trim().equals(key)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
